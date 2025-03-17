@@ -1,4 +1,5 @@
 # Document-Management-and-RAG-based-Q-A-Application
+
 This project implements user authentication, document management, and ingestion trigger/control, built with NestJS and PostgreSQL.
 
 ## Features
