@@ -6,6 +6,8 @@ import { Document } from './documents/entities/document.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { DocumentsModule } from './documents/documents.module';
+import { IngestionModule } from './ingestion/ingestion.module';
+import { IngestionProcess } from './ingestion/entities/ingestion.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { DocumentsModule } from './documents/documents.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [User, Document],
+        entities: [User, Document,IngestionProcess],
         synchronize: true, 
       
       }),
@@ -30,6 +32,7 @@ import { DocumentsModule } from './documents/documents.module';
     AuthModule,
     UsersModule,
     DocumentsModule,
+    IngestionModule
   ],
 })
 export class AppModule {}
