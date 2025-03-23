@@ -1,5 +1,8 @@
-
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
@@ -19,7 +22,7 @@ export class AuthService {
     }
     return null;
   }
-  
+
   async login(user: any) {
     const payload = { username: user.username, sub: user.id, role: user.role };
     return {
@@ -28,7 +31,17 @@ export class AuthService {
   }
 
   async register(userDto: any) {
+    const existingUser = await this.usersService.findByEmail(userDto.email);
+    if (existingUser) {
+      throw new ConflictException('Email already exists');
+    }
+
     const hashedPassword = await bcrypt.hash(userDto.password, 10);
-    return this.usersService.create({ ...userDto, password: hashedPassword });
+
+    return this.usersService.create({
+      ...userDto,
+      password: hashedPassword,
+      role: userDto.role || 'user',
+    });
   }
 }

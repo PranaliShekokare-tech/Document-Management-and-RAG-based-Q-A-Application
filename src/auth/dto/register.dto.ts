@@ -16,6 +16,6 @@ export class RegisterDto {
   password!: string;
 
   @ApiProperty()
-  role!: string;
+  role?: string;
 
 }
