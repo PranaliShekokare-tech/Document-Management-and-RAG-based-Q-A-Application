@@ -1,4 +1,3 @@
-
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
@@ -16,6 +15,6 @@ export class Document {
   @Column()
   filePath!: string;
 
-  @ManyToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.documents, { eager: false })
   owner!: User;
 }

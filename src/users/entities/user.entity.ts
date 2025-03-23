@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Document } from '../../documents/entities/document.entity';
 
 @Entity()
 export class User {
@@ -8,12 +9,15 @@ export class User {
   @Column()
   username!: string;
 
-  @Column({ unique: true })
+  @Column()
   email!: string;
 
   @Column()
   password!: string;
 
-  @Column({ type: 'varchar', default: 'user' })  // 👈 Default role
+  @Column()
   role!: string;
+
+  @OneToMany(() => Document, (document) => document.owner)
+  documents!: Document[];
 }

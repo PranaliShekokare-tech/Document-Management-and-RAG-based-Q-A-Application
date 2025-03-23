@@ -36,7 +36,7 @@ describe('AuthController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/auth/register')
         .send(registerDto)
-        .expect(201);  // ✅ Expect 201 for register
+        .expect(201); 
 
       expect(response.body).toHaveProperty('id');
       expect(response.body.email).toEqual(registerDto.email);

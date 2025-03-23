@@ -1,5 +1,17 @@
-
-import { Controller, Get, Post, Body, Param, Delete, Patch, UploadedFile, UseInterceptors, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  UploadedFile,
+  UseInterceptors,
+  UseGuards,
+  Request,
+  HttpCode,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { DocumentsService } from './documents.service';
@@ -16,14 +28,16 @@ export class DocumentsController {
 
   @Post()
   @Roles('admin', 'editor')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: (req: any, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-      }
-    })
-  }))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req: any, file: Express.Multer.File, cb) => {
+          cb(null, `${Date.now()}-${file.originalname}`);
+        },
+      }),
+    }),
+  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -31,27 +45,24 @@ export class DocumentsController {
       properties: {
         file: {
           type: 'string',
-          format: 'binary'
+          format: 'binary',
         },
-        title: {
-          type: 'string'
-        },
-        description: {
-          type: 'string'
-        }
-      }
-    }
+        title: { type: 'string' },
+        description: { type: 'string' },
+      },
+    },
   })
+  @HttpCode(201)
   create(@UploadedFile() file: Express.Multer.File, @Body() body: any, @Request() req: any) {
-    const document = {
+    const document:any = {
       title: body.title,
       description: body.description,
       filePath: file.path,
-      // owner: req.user,
+      owner: { id: req.user.userId }, // Assuming user info is added to the request by JwtAuthGuard
     };
-
     return this.documentsService.create(document);
   }
+
   @Get()
   findAll() {
     return this.documentsService.findAll();
@@ -64,23 +75,14 @@ export class DocumentsController {
 
   @Patch(':id')
   @Roles('admin', 'editor')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        description: { type: 'string' }
-      }
-    }
-  })
-  update(@Param('id') id: string, @Body() updateData: { title?: string; description?: string }) {
+  update(@Param('id') id: string, @Body() updateData: any) {
     return this.documentsService.update(id, updateData);
   }
-  
 
   @Delete(':id')
   @Roles('admin')
   remove(@Param('id') id: string) {
-    return this.documentsService.remove(id);
+     this.documentsService.remove(id);
+     return {id};
   }
 }
