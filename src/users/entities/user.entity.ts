@@ -18,6 +18,7 @@ export class User {
   @Column()
   role!: string;
 
-  @OneToMany(() => Document, (document) => document.owner)
+  @OneToMany(() => Document, (document) => document.owner, { cascade: true })
   documents!: Document[];
+
 }
