@@ -93,7 +93,130 @@ Below is a summary of the primary API endpoints organized by module:
 - `role` (string): Role assigned to the user. Values: Admin, Editor, Viewer.
 
 **Response**:
-- `user` (message): Updated user details.
+- `user` (object): Updated user details.
+
+---
+
+### DELETE /users/:id
+
+**Description**: Delete user. Requires Admin role.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Request Body**:
+- `id` (string): User's id.
+
+**Response**:
+- `user` (object): User Deleted.
+
+---
+## Documents Module
+
+### POST /documents/upload
+
+**Description**: Uploads a new document.
+
+**Headers**:
+- `Authorization`: Bearer token
+- `Content-Type`: multipart/form-data
+
+**Request Body**:
+- `file` (binary): Document file to upload
+
+**Response**:
+- `id` (number): Document ID.
+- `filename` (string): Name of the uploaded file.
+- `uploadedAt` (string): Upload timestamp.
+
+---
+
+### GET /documents
+
+**Description**: Retrieves all uploaded documents.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- Array of document objects
+
+---
+
+### GET /documents/:id
+
+**Description**: Retrieves a specific document by ID.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- Document object
+
+---
+### DELETE /documents/:id
+
+**Description**: Delete a specific document by ID.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- Document object
+
+---
+
+## Ingestion Module
+
+### POST /ingestion/trigger/:id
+
+**Description**: Triggers the ingestion process for documents.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- `message` (string): Confirmation message.
+- `jobId` (string): Ingestion job ID.
+
+---
+
+### GET /ingestion/status/:id
+
+**Description**: Retrieves the status of a specific ingestion job.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- `jobId` (string): Job ID.
+- `status` (string): Status of the ingestion job.
+"""
+
+---
+
+### POST /ingestion/retry/:id
+
+**Description**: Retry for the status of a specific ingestion job.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- `jobId` (string): Job ID.
+- `status` (string): Status of the ingestion job.
+
+---
+### GET /ingestion/status/all
+
+**Description**: Retrieves the status of all ingestion job.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+ Array of status objects 
+"""
 
 ---
 
