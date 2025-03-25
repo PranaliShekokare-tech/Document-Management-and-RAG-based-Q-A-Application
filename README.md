@@ -3,9 +3,99 @@
 This project implements user authentication, document management, and ingestion trigger/control, built with NestJS and PostgreSQL.
 
 ## Features
-- JWT Authentication with Role-based Access Control (Admin, Editor, Viewer)
-- Document Management APIs with file upload
-- Ingestion trigger & status APIs integrated with a Python backend
+-User Authentication: Implements JWT-based authentication with role-based access control (RBAC) for Admin, Editor, and Viewer roles.
+
+-Document Management: Supports uploading, retrieving, and managing documents.
+
+-Ingestion Control: Provides endpoints to trigger and monitor document ingestion processes, integrating seamlessly with a Python backend.
+
+## Modules Overview
+
+The application is structured into several key modules:
+
+-Auth Module: Manages user authentication and authorization.
+
+-Users Module: Handles user-related operations and data management.
+
+-Documents Module: Manages document-related functionalities, including file uploads and metadata.
+
+-Ingestion Module: Facilitates triggering and monitoring of document ingestion processes, interfacing with the Python backend.
+
+## API Endpoints
+
+Below is a summary of the primary API endpoints organized by module:
+
+## Auth Module
+
+### POST /auth/register
+
+**Description**: Registers a new user with role-based access.
+
+**Request Body**:
+- `username` (string): Desired username.
+- `password` (string): User's password.
+- `email` (string): User's email.
+- `role` (string): Role assigned to the user. Values: Admin, Editor, Viewer.
+
+**Response**:
+- `user` (object): Created user details.
+
+---
+
+### POST /auth/login
+
+**Description**: Authenticates a user and returns a JWT token.
+
+**Request Body**:
+- `email` (string): The user's email.
+- `password` (string): The user's password.
+
+**Response**:
+- `accessToken` (string): JWT token for authenticated access.
+"""
+---
+
+### POST /auth/logout
+
+**Description**: Logs out the user by clearing client-side JWT (stateless logout).
+
+**Headers**:
+- `Authorization`: Bearer token.
+
+**Response**:
+- `message` (string): Logout confirmation.
+"""
+---
+
+## Users Module
+
+### GET /users
+
+**Description**: Retrieves a list of all users. Requires Admin role.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Response**:
+- Array of user objects
+
+---
+
+### PATCH /users/:id
+
+**Description**: Update a role of user. Requires Admin role.
+
+**Headers**:
+- `Authorization`: Bearer token
+
+**Request Body**:
+- `id` (string): User's id.
+- `role` (string): Role assigned to the user. Values: Admin, Editor, Viewer.
+
+**Response**:
+- `user` (message): Updated user details.
+
+---
 
 ## Project Setup
 
